@@ -8,6 +8,26 @@ on:
       
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout the code
+        uses: actions/checkout@v4
+ 
+      - name: set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+ 
+      - name: install dependencies
+        run: npm install
+ 
+      - name: run lint
+        run: npm run lint --if-present
+ 
+      - name: run tests
+        run: npm test --if-present
+        
   bulid:  
     runs-on: ubuntu-latest
 
