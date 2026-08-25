@@ -4,3 +4,24 @@ on:
   workflow_run:
     workflows: ["Build image and push"]
     types: [completed]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: deploy to ec2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull stranger00/practise:latest
+            docker stop practise || true
+            docker rm practise || true
+            docker run -d --name practise -p 8080:8080 stranger00/practise:latest
+ 
+      - name: health check
+        run: |
+          sleep 5
+          curl -f http://${{ secrets.EC2_HOST }}:8080 || exit 1
