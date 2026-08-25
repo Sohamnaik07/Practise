@@ -29,6 +29,7 @@ jobs:
         run: npm test --if-present
         
   bulid:  
+    needs: test 
     runs-on: ubuntu-latest
 
     steps:
