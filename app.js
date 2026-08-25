@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send('<h1>Deployed via Docker + GitHub Actions + EC2  + Soham</h1>');
+  res.send('<h1> Soham</h1>');
 });
 
 app.get('/health', (req, res) => {
